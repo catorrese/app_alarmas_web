@@ -224,9 +224,143 @@
                 </table>
             </div>
 
+            <div v-if="view === 'detalle'">
+                <div class="row">
+                    <div class="column" style="text-align: center">
+                    <p class="div-subtitle">Vizualizar {{alarma_view.alarma}}</p>
+                    </div>
+                    <div class="column" style="text-align: right">
+                    <p></p> 
+                    </div>
+                </div>  
+
+                <table style="text-align: center">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <p>{{alarma_view.hora}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Tono: {{alarma_view.tono}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Reto: {{alarma_view.reto}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button @click="()=> {view = 'eliminar'}" class="button-delete">Eliminar Alarma</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button @click="()=> {view = 'analiticas'}" class="button-delete">Ver analiticas</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <div v-if="view === 'analiticas'">
+                <div class="row">
+                    <div class="column" style="text-align: center">
+                    <p class="div-subtitle" style="font-family: 'Bellota';">Vizualizar {{alarma_view.alarma}}</p>
+                    <table style="text-align: center; font-family: 'Bellota Text'; border-right: 1px solid #072841;">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <p>{{alarma_view.hora}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Tono: {{alarma_view.tono}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Reto: {{alarma_view.reto}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Estado: {{alarma_view.estado}}</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="column" style="text-align: center;">
+                        <p class="div-subtitle" style="font-family: 'Bellota';">Analitics</p>
+                        <table style="text-align: center; font-family: 'Bellota Text'">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <p>Tiempo promedio en desactivar</p>
+                                    <p>35 Segs</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Numero de intentos promedio en desacrivar</p>
+                                    <p>3 intentos</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>  
+
+            </div>
+
+
+            <div v-if="view === 'eliminar'" class="div-table-delete">
+                    <p class="div-table-delete-title">Eliminar alarma</p>
+                    <p class="div-table-delete-text">¿Estas seguro de querer eliminar {{alarma_view.alarma}}?</p>
+
+                <table class="table-delete">
+                    <tr>
+                        <td @click="()=> {index_alarma = alarmas.map(alar => alar.id).indexOf(id_alarma); alarmas.splice(index_alarma, 1); view = 'lista';}">
+                            Eliminar
+                        </td>
+                        <td @click="()=> {view = 'lista'}">
+                            Cancelar
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     </div>
   </body>
 </html>
 
+<script>
+    const { createApp, ref } = Vue
+  
+    createApp({
+      setup() {
+        const alarmas = ref([{id:1, alarma: 'Alarma 1', tono:"Radar", reto:"Triki", estado:"Activo", hora: "1:00"},{id:2, alarma: 'Alarma 2', tono:"pokemon", reto:"Culebrita", estado:"Inactivo", hora: "2:00"} ,{id:3, alarma: 'Alarma 3', tono:"Dragon Ball Z", reto:"Dibujo", estado:"Activo", hora: "3:00"}, {id:4, alarma: 'Alarma 4', tono:"Radar", reto:"Triki", estado:"Activo", hora: "4:00"},{id:5, alarma: 'Alarma 5', tono:"pokemon", reto:"Culebrita", estado:"Inactivo", hora: "5:00"} ,{id:6, alarma: 'Alarma 6', tono:"Dragon Ball Z", reto:"Dibujo", estado:"Activo", hora: "6:00"}, {id:7, alarma: 'Alarma 7', tono:"Radar", reto:"Triki", estado:"Activo", hora: "7:00"},{id:8, alarma: 'Alarma 8', tono:"pokemon", reto:"Culebrita", estado:"Inactivo", hora: "8:00"} ,{id:9, alarma: 'Alarma 9', tono:"Dragon Ball Z", reto:"Dibujo", estado:"Activo", hora: "9:00"}])
+        const id_alarma = ref(1)
+        const index_alarma = ref(1)
+        const view = ref('lista')
+        const alarma_view = {id:1, alarma: 'Alarma 1', tono:"Radar", reto:"Triki", estado:"Activo", hora: "1:00"}
+        return {
+          alarmas, view, alarma_view , id_alarma
+        }
+      }
+    }).mount('#app')
+  </script>
