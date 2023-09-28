@@ -1,0 +1,232 @@
+<!doctype html>
+
+
+<html lang="en">
+  <head>
+    <link href='https://fonts.googleapis.com/css?family=Bellota' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Bellota Text' rel='stylesheet'>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body{
+            color: #072841;
+        }
+
+        * {
+        box-sizing: border-box;
+        }
+        .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        }
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+    
+        .background-color-board {
+            background-color: rgba(20,145,133, 0.05);
+        }
+        .div-title-main {
+            text-align: center;
+            font-family: 'Bellota';font-size: 36px;
+            
+        }
+        .button-history {
+            font-family: 'Bellota';font-size: 28px;
+            color: #072841;
+            background-color: rgba(20,145,133, 0.25);
+            border-radius: 15px;
+            padding: 9px 34px;
+            border: none;
+            cursor: pointer;
+            
+        }
+        .button-history:hover{
+            color: rgba(20,145,133, 1);
+            background-color: #E6E7E8;
+        }
+        .button-delete {
+            font-family: 'Bellota';font-size: 28px;
+            background-color: rgba(20,145,133, 0.25);
+            color: #072841;
+            border-radius: 15px;
+            padding: 9px 34px;
+            border: none;
+            cursor: pointer;
+            
+        }
+        .button-delete:hover{
+            color: rgba(20,145,133, 1);
+            background-color: #E6E7E8;
+        }
+        .div-subtitle {
+            font-family: 'Bellota';font-size: 28px;
+            
+        }
+        .div-back-button{
+            text-align: left;
+            font-family: 'Bellota Text';font-size: 20px;
+        }
+        .back-button{
+            font-family: 'Bellota Text';font-size: 20px;
+            background-color: rgba(20,145,133, 0.20);
+            color: #072841;
+            border-radius: 15px;
+            padding: 7px 30px;
+            border: none;
+            cursor: pointer;
+        }
+        .back-button:hover{
+            color: rgba(20,145,133, 1);
+            background-color: #E6E7E8;
+        }
+        .td-in-list{
+            text-align: left
+
+        }
+        .td-in-list:hover{
+            color: rgba(20,145,133, 1);
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Bellota Text';font-size: 26px;
+        }
+        .table-detail {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Bellota Text';font-size: 26px;
+            text-align: center;
+        }
+        .div-table-delete{
+            width: 30%;
+            background-color: rgba(20,145,133, 0.25);
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            border: 1px solid ;
+        }
+        .div-table-delete-title{
+            font-family: 'Bellota';font-size: 28px;
+        }
+        .div-table-delete-text{
+            font-family: 'Bellota Text';font-size: 24px;
+            
+        }
+        .table-delete {
+            /* width: 30%; */
+            font-family: 'Bellota Text';font-size: 26px;
+            border-top: 1px solid #072841;
+            /* margin-left: auto;
+            margin-right: auto; */
+            text-align: center;
+        }
+        .table-delete td{
+            border: 1px solid #072841;
+            background-color:  rgba(20,145,133, 0.40);
+            padding: 15px;
+        }
+        .table-delete td:hover{
+            color: rgba(20,145,133, 1);
+            cursor: pointer;
+            background-color: #E6E7E8;
+        }
+        .tr-list {
+            border-bottom: 1pt solid #072841;
+            
+        }
+        th, td {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+    
+    </style>
+
+    
+
+  </head>
+  <body>
+    <div id="app">
+        <div class="div-back-button">
+            <button @click="()=> {view = 'lista'}" class="back-button">volver</button>
+        </div>
+        <div class="div-title-main">
+            <p>App de Alarmas  <img src = "clock.svg" width="25" alt="clock"/></p> 
+        </div>
+
+        <div class="background-color-board">
+
+            <div v-if="view === 'lista'">
+                <div class="row">
+                    <div class="column" style="text-align: left">
+                    <p class="div-subtitle">Visualizar alarmas.</p>
+                    </div>
+                    <div class="column" style="text-align: right">
+                    <p><button @click="()=> {view = 'historial'}" class="button-history">Historial</button></p> 
+                    </div>
+                </div>  
+                <table>
+                    <thead>
+                    <tr class="tr-list">
+                        <th style="text-align: left">Nombre</th>
+                        <th style="text-align: right">Hora</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="alarma in alarmas" class="tr-list">
+                        <td @click="()=> {view = 'detalle'; id_alarma=alarma.id; alarma_view=alarmas.filter(obj => {return obj.id === alarma.id})[0]; console.log(alarma_view)}" class="td-in-list">{{alarma.alarma}}</td>
+                        <td style="text-align: right">{{alarma.hora}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div v-if="view === 'historial'">
+                <div class="row">
+                    <div class="column" style="text-align: left">
+                    <p class="div-subtitle">Historial.</p>
+                    </div>
+                    <div class="column" style="text-align: right">
+                    <p><button @click="()=> {view = 'lista'}" class="button-history">Listado de Alarmas</button></p> 
+                    </div>
+                </div>  
+                <table class="table-detail">
+                    <thead>
+                    <tr class="tr-list">
+                        <th style="text-align: left">Nombre</th>
+                        <th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align: center">Estado <img src="mark.png" width="25" alt="mark"/></th>
+                            <th style="text-align: right">Hora</th>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="alarma in alarmas" class="tr-list">
+                        <td style="text-align: left">{{alarma.alarma}}</td>
+                        <td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: center">{{alarma.estado}}</td>
+                            <td style="text-align: right">{{alarma.hora}}</td>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+  </body>
+</html>
+
